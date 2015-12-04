@@ -32,6 +32,9 @@ public class App {
 	@Component
 	public static class TestField {
 
+		@Autowired
+		private Test test;
+
 		private String helloWorld = "Hello World!";
 
 		public String getHelloWorld() {
