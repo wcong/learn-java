@@ -1,7 +1,3 @@
-/**
- * Copyright 2014-2015, NetEase, Inc. All Rights Reserved.
- * Date: 15/12/4
- */
 package org.wcong.test;
 
 import org.springframework.cache.CacheManager;
@@ -17,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 
 /**
- * @author hzwangcong<hzwangcong@corp.netease.com>
+ * @author wcong
  * @since 15/12/4
  */
 @Configuration
