@@ -1,7 +1,3 @@
-/**
- * Copyright 2014-2015, NetEase, Inc. All Rights Reserved.
- * Date: 15/12/9
- */
 package org.wcong.test;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -11,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author hzwangcong<hzwangcong@corp.netease.com>
+ * @author wcong<wc19920415@gmail.com>
  * @since 15/12/9
  */
 public class CollectionsUtilTest {
