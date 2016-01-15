@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * test for inject list
  *
- * @author hzwangcong<hzwangcong@corp.netease.com>
+ * @author wcong<wc19920415@gmail.com>
  * @since 15/12/15
  */
 @Configuration
