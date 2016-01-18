@@ -13,6 +13,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <springframework.version>3.2.9.RELEASE</springframework.version>
+        <tomcat.version>7.0.56</tomcat.version>
     </properties>
 
     <dependencies>
@@ -52,6 +53,16 @@
             <artifactId>spring-test</artifactId>
             <version>${springframework.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-logging-juli</artifactId>
+            <version>${tomcat.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-collections</groupId>

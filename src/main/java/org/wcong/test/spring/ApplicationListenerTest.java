@@ -1,27 +1,22 @@
-package org.wcong.test;
+package org.wcong.test.spring;
 
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-
 /**
- * Integrate into SpringBeanFactory
- *
  * @author wcong<wc19920415@gmail.com>
  * @since 16/1/15
  */
 @Configuration
-public class IntegrateSpringBeanFactory {
+public class ApplicationListenerTest {
 
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext();
-		annotationConfigApplicationContext.addBeanFactoryPostProcessor(new BeanFactoryPostProcessorTest());
-		annotationConfigApplicationContext.register(PrintHello.class);
+		annotationConfigApplicationContext.register(ApplicationListenerTest.class);
 		annotationConfigApplicationContext.refresh();
 		PrintSomething printSomething = annotationConfigApplicationContext.getBean(PrintSomething.class);
 		printSomething.print();
@@ -39,10 +34,11 @@ public class IntegrateSpringBeanFactory {
 		}
 	}
 
-	public static class BeanFactoryPostProcessorTest implements BeanFactoryPostProcessor {
+	@Component
+	public static class ApplicationListenerComponent implements ApplicationListener {
 
-		public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-			System.out.println(Arrays.asList(beanFactory.getBeanDefinitionNames()));
+		public void onApplicationEvent(ApplicationEvent event) {
+			System.out.println(event);
 		}
 	}
 

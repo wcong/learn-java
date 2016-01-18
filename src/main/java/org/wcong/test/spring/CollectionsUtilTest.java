@@ -1,4 +1,4 @@
-package org.wcong.test;
+package org.wcong.test.spring;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.functors.NotNullPredicate;

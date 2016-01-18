@@ -2,7 +2,7 @@
  * Copyright 2014-2015, NetEase, Inc. All Rights Reserved.
  * Date: 15/12/15
  */
-package org.wcong.test;
+package org.wcong.test.spring;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package org.wcong.test;
+package org.wcong.test.spring;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -41,12 +41,12 @@ public class AopTest {
 	@Aspect
 	public static class Aop {
 
-		@Pointcut("within(org.wcong.test.AopTest.Test)")
+		@Pointcut("within(org.wcong.test.spring.AopTest.Test)")
 		public void test() {
 
 		}
 
-		@Before("org.wcong.test.AopTest.Aop.test()")
+		@Before("org.wcong.test.spring.AopTest.Aop.test()")
 		public void testNum(Integer num) {
 			System.out.println("aop:" + num);
 		}

@@ -1,4 +1,4 @@
-package org.wcong.test;
+package org.wcong.test.spring;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
