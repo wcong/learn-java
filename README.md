@@ -1,2 +1,2 @@
 # learn-spring
-example of lean spring
+example of learn spring
