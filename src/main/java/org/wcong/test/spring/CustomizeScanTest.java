@@ -37,7 +37,7 @@ import java.util.Set;
 /**
  * test for customer
  *
- * @author hzwangcong<hzwangcong@corp.netease.com>
+ * @author wcong<wc19920415@gmail.com>
  * @since 16/1/22
  */
 @Configuration

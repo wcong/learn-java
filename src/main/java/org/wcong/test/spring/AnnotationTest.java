@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 
 /**
- * @author wcong
+ * @author wcong<wc19920415@gmail.com>
  * @since 15/12/4
  */
 @Configuration
