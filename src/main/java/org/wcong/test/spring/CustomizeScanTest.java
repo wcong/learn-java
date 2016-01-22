@@ -36,6 +36,10 @@ import java.util.Set;
 
 /**
  * test for customer
+ * 1 BeanFactoryPostProcessor after bean factory is created,scan and modify bean definition
+ * 2 BeanDefinition , bean class , if a basic class, auto ,else if a factory bean ,create by factory bean
+ * 3 FactoryBean , create bean
+ * 4 Scan ,basic scan
  *
  * @author wcong<wc19920415@gmail.com>
  * @since 16/1/22
