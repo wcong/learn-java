@@ -25,4 +25,8 @@ public @interface MyComponent {
 
 ```
 
-*value()* is importent for generate bean name
+*value()* is important for generate bean name
+
+**[Full Examples](../../src/main/java/org/wcong/test/spring/ComponentAnnotationTest.java)**
+
+
