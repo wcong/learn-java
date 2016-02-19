@@ -8,14 +8,12 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
-import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.cglib.core.SpringNamingPolicy;
-import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
@@ -56,8 +54,7 @@ public class CustomizeScanTest {
 	}
 
 	@Component
-	public static class BeanScannerConfigurer
-			implements InitializingBean, BeanFactoryPostProcessor, ApplicationContextAware {
+	public static class BeanScannerConfigurer implements BeanFactoryPostProcessor, ApplicationContextAware {
 
 		private ApplicationContext applicationContext;
 
@@ -69,10 +66,6 @@ public class CustomizeScanTest {
 			Scanner scanner = new Scanner((BeanDefinitionRegistry) beanFactory);
 			scanner.setResourceLoader(this.applicationContext);
 			scanner.scan("org.wcong.test.spring.scan");
-		}
-
-		public void afterPropertiesSet() throws Exception {
-
 		}
 	}
 
@@ -97,15 +90,10 @@ public class CustomizeScanTest {
 		}
 
 		public boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
-			return beanDefinition.getMetadata().hasAnnotation(CustomizeComponent.class.getName());
+			return super.isCandidateComponent(beanDefinition) && beanDefinition.getMetadata()
+					.hasAnnotation(CustomizeComponent.class.getName());
 		}
 
-		public boolean checkCandidate(String beanName, BeanDefinition beanDefinition) throws IllegalStateException {
-			if (super.checkCandidate(beanName, beanDefinition)) {
-				return true;
-			}
-			return false;
-		}
 	}
 
 	public static class FactoryBeanTest<T> implements InitializingBean, FactoryBean<T> {

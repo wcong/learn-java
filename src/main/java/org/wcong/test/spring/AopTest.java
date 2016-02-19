@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * @author wcong
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Component;
  */
 @Configuration
 @EnableAspectJAutoProxy
+@EnableWebMvc
 public class AopTest {
 
 	public static void main(String[] args) {
