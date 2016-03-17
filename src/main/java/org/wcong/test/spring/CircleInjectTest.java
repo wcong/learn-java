@@ -1,7 +1,3 @@
-/**
- * Copyright 2014-2015, NetEase, Inc. All Rights Reserved.
- * Date: 15/12/15
- */
 package org.wcong.test.spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
