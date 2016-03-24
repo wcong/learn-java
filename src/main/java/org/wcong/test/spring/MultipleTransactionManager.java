@@ -24,8 +24,6 @@ public class MultipleTransactionManager {
 		annotationConfigApplicationContext.refresh();
 	}
 
-	@Repository
-	public static class StockRepository implements
 
 	@Bean
 	public DataSourceTransactionManager getDataSourceTransactionManager() {
