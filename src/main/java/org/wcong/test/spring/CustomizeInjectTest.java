@@ -22,6 +22,7 @@ public class CustomizeInjectTest {
 		beanClass.print();
 		FullInjectBeanClass fullInjectBeanClass = annotationConfigApplicationContext.getBean(FullInjectBeanClass.class);
 		fullInjectBeanClass.print();
+		fullInjectBeanClass.superPrint();
 	}
 
 	@Component
@@ -43,9 +44,18 @@ public class CustomizeInjectTest {
 		}
 	}
 
+	public static class FullInjectSuperBeanClass {
+		private FieldClass superFieldClass;
+
+		public void superPrint() {
+			superFieldClass.print();
+		}
+
+	}
+
 	@Component
 	@FullInject
-	public static class FullInjectBeanClass {
+	public static class FullInjectBeanClass extends FullInjectSuperBeanClass {
 		private FieldClass fieldClass;
 
 		public void print() {
@@ -60,10 +70,13 @@ public class CustomizeInjectTest {
 
 		public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 			if (hasAnnotation(bean.getClass().getAnnotations(), FullInject.class.getName())) {
-				Field[] fields = bean.getClass().getDeclaredFields();
-				for (Field field : fields) {
-					setField(bean, field);
-				}
+				Class beanClass = bean.getClass();
+				do {
+					Field[] fields = beanClass.getDeclaredFields();
+					for (Field field : fields) {
+						setField(bean, field);
+					}
+				} while ((beanClass = beanClass.getSuperclass()) != null);
 			} else {
 				processMyInject(bean);
 			}
@@ -71,13 +84,16 @@ public class CustomizeInjectTest {
 		}
 
 		private void processMyInject(Object bean) {
-			Field[] fields = bean.getClass().getDeclaredFields();
-			for (Field field : fields) {
-				if (!hasAnnotation(field.getAnnotations(), MyInject.class.getName())) {
-					continue;
+			Class beanClass = bean.getClass();
+			do {
+				Field[] fields = beanClass.getDeclaredFields();
+				for (Field field : fields) {
+					if (!hasAnnotation(field.getAnnotations(), MyInject.class.getName())) {
+						continue;
+					}
+					setField(bean, field);
 				}
-				setField(bean, field);
-			}
+			} while ((beanClass = beanClass.getSuperclass()) != null);
 		}
 
 		private void setField(Object bean, Field field) {
