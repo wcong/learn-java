@@ -54,7 +54,7 @@ public class CustomizeInjectTest {
 	}
 
 	@Component
-	public static class MyInjectBeanPost implements BeanPostProcessor, ApplicationContextAware {
+	public static class MyInjectBeanPostProcessor implements BeanPostProcessor, ApplicationContextAware {
 
 		private ApplicationContext applicationContext;
 
