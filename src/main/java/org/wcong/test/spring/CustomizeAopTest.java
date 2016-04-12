@@ -3,27 +3,27 @@ package org.wcong.test.spring;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-/**
- * @author wcong
- * @since 15/12/5
- */
 @Configuration
-@EnableAspectJAutoProxy
-public class AopTest {
+public class CustomizeAopTest {
 
 	public static void main(String[] args) {
-		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(
-				AopTest.class);
+		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext();
+		annotationConfigApplicationContext.register(CustomizeAopTest.class);
+		annotationConfigApplicationContext.refresh();
 		Test test = annotationConfigApplicationContext.getBean(Test.class);
 		test.test(1);
+	}
+
+	@Bean
+	public AnnotationAwareAspectJAutoProxyCreator makeAnnotationAwareAspectJAutoProxyCreator() {
+		return new AnnotationAwareAspectJAutoProxyCreator();
 	}
 
 	@Bean
@@ -43,12 +43,12 @@ public class AopTest {
 	@Aspect
 	public static class Aop {
 
-		@Pointcut("within(org.wcong.test.spring.AopTest.Test)")
+		@Pointcut("within(org.wcong.test.spring.CustomizeAopTest.Test)")
 		public void test() {
 
 		}
 
-		@Before("org.wcong.test.spring.AopTest.Aop.test() && args(num)")
+		@Before("org.wcong.test.spring.CustomizeAopTest.Aop.test() && args(num)")
 		public void testNum(Integer num) {
 			System.out.println("aop:" + num);
 		}
