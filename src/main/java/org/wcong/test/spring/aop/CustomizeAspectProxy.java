@@ -20,7 +20,7 @@ import java.util.Map;
  * @author wcong<wc19920415@gmail.com>
  * @since 16/4/18
  */
-public class CustomizeAspectScan implements BeanPostProcessor, ApplicationContextAware {
+public class CustomizeAspectProxy implements BeanPostProcessor, ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
 

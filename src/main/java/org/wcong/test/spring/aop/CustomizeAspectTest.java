@@ -46,8 +46,8 @@ public class CustomizeAspectTest {
 	}
 
 	@Bean
-	public CustomizeAspectScan getCustomizeAspectScan() {
-		return new CustomizeAspectScan();
+	public CustomizeAspectProxy getCustomizeAspectScan() {
+		return new CustomizeAspectProxy();
 	}
 
 }
