@@ -75,37 +75,37 @@ public class CustomizeAspectProxy implements BeanPostProcessor, ApplicationConte
 			if (advisorList != null) {
 				return;
 			}
-		}
-		String[] beanNames = applicationContext.getBeanDefinitionNames();
-		advisorList = new ArrayList<AbstractAdvisor>();
-		for (String beanName : beanNames) {
-			Class<?> beanClass = applicationContext.getType(beanName);
-			MyAspect myAspect = beanClass.getAnnotation(MyAspect.class);
-			if (myAspect == null) {
-				continue;
-			}
-			Method[] methods = beanClass.getDeclaredMethods();
-			if (methods == null) {
-				continue;
-			}
-			Object bean = applicationContext.getBean(beanName);
-			List<AbstractAdvisor> beanAdvisorList = new ArrayList<AbstractAdvisor>(methods.length);
-			for (Method method : methods) {
-				if (method.getName().equals("before")) {
-					beanAdvisorList.add(new MethodInvocation.BeforeAdvisor(bean, method));
-				} else if (method.getName().equals("around")) {
-					beanAdvisorList.add(new MethodInvocation.AroundAdvisor(bean, method));
-				} else if (method.getName().equals("after")) {
-					beanAdvisorList.add(new MethodInvocation.AfterAdvisor(bean, method));
+			String[] beanNames = applicationContext.getBeanDefinitionNames();
+			advisorList = new ArrayList<AbstractAdvisor>();
+			for (String beanName : beanNames) {
+				Class<?> beanClass = applicationContext.getType(beanName);
+				MyAspect myAspect = beanClass.getAnnotation(MyAspect.class);
+				if (myAspect == null) {
+					continue;
 				}
+				Method[] methods = beanClass.getDeclaredMethods();
+				if (methods == null) {
+					continue;
+				}
+				Object bean = applicationContext.getBean(beanName);
+				List<AbstractAdvisor> beanAdvisorList = new ArrayList<AbstractAdvisor>(methods.length);
+				for (Method method : methods) {
+					if (method.getName().equals("before")) {
+						beanAdvisorList.add(new MethodInvocation.BeforeAdvisor(bean, method));
+					} else if (method.getName().equals("around")) {
+						beanAdvisorList.add(new MethodInvocation.AroundAdvisor(bean, method));
+					} else if (method.getName().equals("after")) {
+						beanAdvisorList.add(new MethodInvocation.AfterAdvisor(bean, method));
+					}
+				}
+				advisorList.addAll(beanAdvisorList);
 			}
-			advisorList.addAll(beanAdvisorList);
+			Collections.sort(advisorList, new Comparator<AbstractAdvisor>() {
+				public int compare(AbstractAdvisor o1, AbstractAdvisor o2) {
+					return o1.getOrder() - o2.getOrder();
+				}
+			});
 		}
-		Collections.sort(advisorList, new Comparator<AbstractAdvisor>() {
-			public int compare(AbstractAdvisor o1, AbstractAdvisor o2) {
-				return o1.getOrder() - o2.getOrder();
-			}
-		});
 	}
 
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

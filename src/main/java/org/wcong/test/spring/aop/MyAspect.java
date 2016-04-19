@@ -16,5 +16,4 @@ public @interface MyAspect {
 	String value() default "";
 
 	String pointCut();
-
 }
