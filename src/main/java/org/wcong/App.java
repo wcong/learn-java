@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * Hello world!
@@ -13,11 +14,11 @@ import java.math.BigDecimal;
 @Configuration
 public class App {
 	public static void main(String[] args) {
-		BigDecimal test = new BigDecimal("110.000");
+		BigDecimal test = new BigDecimal("00.0001");
 		test = test.setScale(3,BigDecimal.ROUND_DOWN);
 		System.out.println(test);
 		System.out.println(test.multiply(new BigDecimal(1000)).divide(new BigDecimal(1000)));
-		System.out.println(test.toBigInteger());
+		System.out.println(test.unscaledValue().equals(BigInteger.ZERO));
 	}
 
 	@Component
