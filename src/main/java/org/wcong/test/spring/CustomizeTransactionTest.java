@@ -86,11 +86,6 @@ public class CustomizeTransactionTest {
 		return new InfrastructureAdvisorAutoProxyCreator();
 	}
 
-	@Bean
-	public ProxyTransactionManagementConfiguration proxyTransactionManagementConfiguration() {
-		return new ProxyTransactionManagementConfiguration();
-	}
-
 	public static class MySpringTransactionAnnotationParser extends SpringTransactionAnnotationParser {
 
 		@Override

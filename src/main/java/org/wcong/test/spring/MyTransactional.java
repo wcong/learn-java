@@ -26,7 +26,7 @@ public @interface MyTransactional {
 	 *
 	 * @see #transactionManager
 	 */
-	@AliasFor("transactionManager") String value() default "";
+	String value() default "";
 
 	/**
 	 * A <em>qualifier</em> value for the specified transaction.
@@ -38,7 +38,7 @@ public @interface MyTransactional {
 	 * @see #value
 	 * @since 4.2
 	 */
-	@AliasFor("value") String transactionManager() default "";
+	String transactionManager() default "";
 
 	/**
 	 * The transaction propagation type.

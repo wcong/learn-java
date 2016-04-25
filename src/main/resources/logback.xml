@@ -3,11 +3,15 @@
 
     <appender name="ROOT_APPENDER" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <Pattern>%date [%level] %msg%n</Pattern>
+            <Pattern>%date [%level] %logger{10} [%file : %line] %M %msg%n</Pattern>
         </encoder>
     </appender>
 
     <logger name="org.springframework.transaction.interceptor" level="TRACE" additivity="false">
+        <appender-ref ref="ROOT_APPENDER"/>
+    </logger>
+
+    <logger name="org.springframework.jdbc" level="TRACE" additivity="false">
         <appender-ref ref="ROOT_APPENDER"/>
     </logger>
     <root level="INFO">
