@@ -3,6 +3,8 @@ package org.wcong.test.spring;
 import org.aopalliance.intercept.MethodInvocation;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.InfrastructureAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -43,6 +45,8 @@ import java.util.Collection;
 @Configuration
 public class CustomizeTransactionTest {
 
+	public static Logger logger = LoggerFactory.getLogger(CustomizeTransactionTest.class);
+
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext();
 		annotationConfigApplicationContext.register(CustomizeTransactionTest.class);
@@ -50,7 +54,7 @@ public class CustomizeTransactionTest {
 		DbTest dbTest = annotationConfigApplicationContext.getBean(DbTest.class);
 		dbTest.createTable();
 		dbTest.add(new TestModel("test"));
-		System.out.println(dbTest.count());
+		logger.info(String.valueOf(dbTest.count()));
 	}
 
 	@Bean
@@ -108,10 +112,10 @@ public class CustomizeTransactionTest {
 	public static class MyTransactionInterceptor extends TransactionInterceptor {
 		@Override
 		public Object invoke(final MethodInvocation invocation) throws Throwable {
-			System.out.println("transaction method :" +
+			logger.info("transaction method :" +
 					invocation.getMethod().getDeclaringClass().getName() + "." + invocation.getMethod().getName());
 			Object object = super.invoke(invocation);
-			System.out.println(invocation.getMethod().getName() + " result :" + object);
+			logger.info(invocation.getMethod().getName() + " result :" + object);
 			return object;
 		}
 	}
