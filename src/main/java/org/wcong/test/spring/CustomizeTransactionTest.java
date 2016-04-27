@@ -1,5 +1,6 @@
 package org.wcong.test.spring;
 
+import org.aopalliance.intercept.MethodInvocation;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.aop.framework.autoproxy.InfrastructureAdvisorAutoProxyCreator;
@@ -19,7 +20,6 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.AnnotationTransactionAttributeSource;
-import org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration;
 import org.springframework.transaction.annotation.SpringTransactionAnnotationParser;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 import org.springframework.transaction.config.TransactionManagementConfigUtils;
@@ -105,6 +105,17 @@ public class CustomizeTransactionTest {
 
 	}
 
+	public static class MyTransactionInterceptor extends TransactionInterceptor {
+		@Override
+		public Object invoke(final MethodInvocation invocation) throws Throwable {
+			System.out.println("transaction method :" +
+					invocation.getMethod().getDeclaringClass().getName() + "." + invocation.getMethod().getName());
+			Object object = super.invoke(invocation);
+			System.out.println(invocation.getMethod().getName() + " result :" + object);
+			return object;
+		}
+	}
+
 	@Configuration
 	public static class MyProxyTransactionManagementConfiguration {
 
@@ -147,7 +158,7 @@ public class CustomizeTransactionTest {
 		@Bean
 		@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 		public TransactionInterceptor transactionInterceptor() {
-			TransactionInterceptor interceptor = new TransactionInterceptor();
+			TransactionInterceptor interceptor = new MyTransactionInterceptor();
 			interceptor.setTransactionAttributeSource(transactionAttributeSource());
 			if (this.txManager != null) {
 				interceptor.setTransactionManager(this.txManager);

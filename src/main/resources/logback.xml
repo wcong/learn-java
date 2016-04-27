@@ -11,7 +11,7 @@
         <appender-ref ref="ROOT_APPENDER"/>
     </logger>
 
-    <logger name="org.springframework.jdbc" level="TRACE" additivity="false">
+    <logger name="org.springframework.jdbc.datasource.DataSourceTransactionManager" level="TRACE" additivity="false">
         <appender-ref ref="ROOT_APPENDER"/>
     </logger>
     <root level="INFO">
