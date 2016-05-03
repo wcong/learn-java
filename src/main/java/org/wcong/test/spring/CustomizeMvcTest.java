@@ -21,6 +21,8 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author wcong<wc19920415@gmail.com>
@@ -39,7 +41,9 @@ public class CustomizeMvcTest {
 		DispatcherServlet dispatcherServlet = new DispatcherServlet(annotationConfigWebApplicationContext);
 		dispatcherServlet.init(mockServletConfig);
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		dispatcherServlet.service(new MockHttpServletRequest("GET", "/"), response);
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/");
+		request.addHeader("Accept","application/json");
+		dispatcherServlet.service(request, response);
 		System.out.println(new String(response.getContentAsByteArray()));
 	}
 
@@ -48,8 +52,10 @@ public class CustomizeMvcTest {
 
 		@MyRequestMapping("/")
 		@ResponseBody
-		public String index() {
-			return "hello world";
+		public Map index() {
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("result", "hello world");
+			return map;
 		}
 
 	}
