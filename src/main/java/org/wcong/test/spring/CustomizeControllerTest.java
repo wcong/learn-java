@@ -29,14 +29,14 @@ import java.util.Map;
  * @since 16/4/27
  */
 @Configuration
-public class CustomizeMvcTest {
+public class CustomizeControllerTest {
 
 	public static void main(String[] args) throws ServletException, IOException {
 		AnnotationConfigWebApplicationContext annotationConfigWebApplicationContext = new AnnotationConfigWebApplicationContext();
 		MockServletContext mockServletContext = new MockServletContext();
 		MockServletConfig mockServletConfig = new MockServletConfig(mockServletContext);
 		annotationConfigWebApplicationContext.setServletConfig(mockServletConfig);
-		annotationConfigWebApplicationContext.register(CustomizeMvcTest.class);
+		annotationConfigWebApplicationContext.register(CustomizeControllerTest.class);
 
 		DispatcherServlet dispatcherServlet = new DispatcherServlet(annotationConfigWebApplicationContext);
 		dispatcherServlet.init(mockServletConfig);
