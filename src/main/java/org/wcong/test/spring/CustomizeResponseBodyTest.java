@@ -38,6 +38,7 @@ import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +62,7 @@ public class CustomizeResponseBodyTest {
         MockHttpServletResponse response = new MockHttpServletResponse();
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/");
         request.addHeader("Accept", "application/json");
-        request.setContent("result,hello world".getBytes());
+        request.setContent(("result,hello world;date," + Calendar.getInstance().getTimeInMillis()).getBytes());
         dispatcherServlet.service(request, response);
         System.out.println(new String(response.getContentAsByteArray()));
     }
@@ -166,12 +167,13 @@ public class CustomizeResponseBodyTest {
 
     public static class MyMessageConvert extends AbstractGenericHttpMessageConverter<Object> {
 
-        public boolean canRead(Class<?> clazz, MediaType mediaType) {
-            return clazz.isAssignableFrom(RequestData.class);
+        @Override
+        public boolean canRead(Type type, Class<?> contextClass, MediaType mediaType) {
+            return ((Class) type).isAssignableFrom(RequestData.class);
         }
 
-        public boolean canWrite(Class<?> clazz, MediaType mediaType) {
-            return clazz.isAssignableFrom(ResponseData.class);
+        public boolean canWrite(Type type, Class<?> clazz, MediaType mediaType) {
+            return ((Class) type).isAssignableFrom(ResponseData.class);
         }
 
         public List<MediaType> getSupportedMediaTypes() {
