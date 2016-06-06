@@ -1,0 +1,8 @@
+
+*ConditionEvaluator
+*ConfigurationClassParser
+*ConfigurationClassPostProcessor
+*ConfigurationClassBeanDefinitionReader
+*ConfigurationPropertiesBindingPostProcessorRegistrar
+*BeanDefinitionBuilder
+*ImportRegistry
