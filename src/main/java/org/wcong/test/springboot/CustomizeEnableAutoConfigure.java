@@ -14,10 +14,10 @@ import java.util.Map;
  */
 @Configuration
 @MyEnableAutoConfiguration
-public class CustomizeAutoConfigure {
+public class CustomizeEnableAutoConfigure {
 
     public static void main(String[] args) {
-        SpringApplication application = new SpringApplication(CustomizeAutoConfigure.class);
+        SpringApplication application = new SpringApplication(CustomizeEnableAutoConfigure.class);
         application.run(args);
     }
 
