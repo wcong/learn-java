@@ -5,27 +5,11 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by wcong on 2016/6/12.
  */
 @Configuration
-//@EnableAutoConfiguration(excludeName = {"org.springframework.boot.autoconfigure.web.DispatcherServletAutoConfiguration",
-//        "org.springframework.boot.autoconfigure.web.EmbeddedServletContainerAutoConfiguration",
-//        "org.springframework.boot.autoconfigure.web.ErrorMvcAutoConfiguration",
-//        "org.springframework.boot.autoconfigure.web.HttpEncodingAutoConfiguration",
-//        "org.springframework.boot.autoconfigure.web.HttpMessageConvertersAutoConfiguration",
-//        "org.springframework.boot.autoconfigure.web.MultipartAutoConfiguration",
-//        "org.springframework.boot.autoconfigure.web.ServerPropertiesAutoConfiguration",
-//        "org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration",
-//        "org.springframework.boot.autoconfigure.websocket.WebSocketAutoConfiguration",
-//        "org.springframework.boot.autoconfigure.websocket.WebSocketMessagingAutoConfiguration"})
 @EnableAutoConfiguration
 public class CustomizeConditional {
 
@@ -38,18 +22,8 @@ public class CustomizeConditional {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        ConfigurableApplicationContext configurableApplicationContext = springApplication.run("--message=haha","--logging.level.root=ERROR");
+        ConfigurableApplicationContext configurableApplicationContext = springApplication.run("--message=haha", "--logging.level.root=ERROR");
         System.out.println(configurableApplicationContext.getBean(HelloWorld.class));
-    }
-
-    @Controller
-    public static class MyController {
-        @RequestMapping
-        @ResponseBody
-        public Map<String, String> index() {
-            Map<String, String> map = new HashMap<String, String>();
-            return map;
-        }
     }
 
     @Configuration
