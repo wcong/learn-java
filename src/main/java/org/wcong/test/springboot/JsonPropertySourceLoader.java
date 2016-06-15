@@ -6,7 +6,6 @@ import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.Resource;
-import org.springframework.util.ClassUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,11 +23,8 @@ public class JsonPropertySourceLoader implements PropertySourceLoader {
     }
 
     public PropertySource<?> load(String name, Resource resource, String profile) throws IOException {
-        if (ClassUtils.isPresent("com.fasterxml.jackson.databind.ObjectMapper", null)) {
-            Map<String, Object> result = mapPropertySource(resource);
-            return new MapPropertySource(name, result);
-        }
-        return null;
+        Map<String, Object> result = mapPropertySource(resource);
+        return new MapPropertySource(name, result);
     }
 
     private Map<String, Object> mapPropertySource(Resource resource) throws IOException {
