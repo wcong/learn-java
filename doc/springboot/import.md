@@ -6,3 +6,7 @@
 *ConfigurationPropertiesBindingPostProcessorRegistrar
 *BeanDefinitionBuilder
 *ImportRegistry
+
+
+*PropertySourcesLoader
+*ConfigFileApplicationListener
