@@ -3,5 +3,10 @@
     "property": {
       "message": "hello world"
     }
+  },
+  "logging": {
+    "level": {
+      "root": "ERROR"
+    }
   }
 }
