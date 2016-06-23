@@ -10,3 +10,7 @@
 
 *PropertySourcesLoader
 *ConfigFileApplicationListener
+
+*EndpointMvcAdapter
+*MvcEndpoints
+*EndpointMvcAdapter
