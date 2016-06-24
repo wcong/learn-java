@@ -5,7 +5,6 @@ import org.springframework.boot.actuate.endpoint.Endpoint;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.ArrayList;
@@ -21,9 +20,7 @@ import java.util.Map;
  */
 @Configuration
 @EnableAutoConfiguration
-@EnableScheduling
 public class CustomizeEndPoint {
-
 
     public static void main(String[] args) {
         SpringApplication application = new SpringApplication(CustomizeEndPoint.class);
@@ -45,7 +42,7 @@ public class CustomizeEndPoint {
         }
     }
 
-    static class MemStatus {
+    public static class MemStatus {
 
         public MemStatus(Date date, Map<String, Object> status) {
             this.date = date;
@@ -68,7 +65,7 @@ public class CustomizeEndPoint {
 
     public static class MemCollector {
 
-        private int maxSize = 100;
+        private int maxSize = 5;
 
         private List<MemStatus> status;
 
@@ -87,7 +84,7 @@ public class CustomizeEndPoint {
             memoryMap.put("totalMemory", totalMemory);
             if (status.size() > maxSize) {
                 status.remove(0);
-                status.add(maxSize - 1, new MemStatus(date, memoryMap));
+                status.add(new MemStatus(date, memoryMap));
             } else {
                 status.add(new MemStatus(date, memoryMap));
             }
