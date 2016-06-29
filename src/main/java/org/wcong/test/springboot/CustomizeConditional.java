@@ -16,14 +16,14 @@ public class CustomizeConditional {
     public static void main(String[] args) {
         SpringApplication springApplication = new SpringApplication(CustomizeConditional.class);
         springApplication.setWebEnvironment(false);
-        ConfigurableApplicationContext noneMessageConfigurableApplicationContext = springApplication.run("--logging.level.root=ERROR");
+        ConfigurableApplicationContext noneMessageConfigurableApplicationContext = springApplication.run("--logging.level.root=ERROR","--endpoints.enabled=false");
         try {
-            System.out.println(noneMessageConfigurableApplicationContext.getBean(HelloWorld.class));
+            noneMessageConfigurableApplicationContext.getBean(HelloWorld.class).print();
         } catch (Exception e) {
             e.printStackTrace();
         }
         ConfigurableApplicationContext configurableApplicationContext = springApplication.run("--message=haha", "--logging.level.root=ERROR");
-        System.out.println(configurableApplicationContext.getBean(HelloWorld.class));
+        configurableApplicationContext.getBean(HelloWorld.class).print();
     }
 
     @Configuration
@@ -36,7 +36,7 @@ public class CustomizeConditional {
     }
 
     private static class HelloWorld {
-        public void pring() {
+        public void print() {
             System.out.println("hello world");
         }
     }

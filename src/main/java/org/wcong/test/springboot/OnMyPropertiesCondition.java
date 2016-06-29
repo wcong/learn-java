@@ -13,10 +13,8 @@ public class OnMyPropertiesCondition extends SpringBootCondition {
     public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
         Object propertiesName = metadata.getAnnotationAttributes(ConditionalOnMyProperties.class.getName()).get("name");
         if (propertiesName != null) {
-            System.out.println(propertiesName);
             String value = context.getEnvironment().getProperty(propertiesName.toString());
             if (value != null) {
-                System.out.println(value);
                 return new ConditionOutcome(true, "get properties");
             }
         }

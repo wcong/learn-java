@@ -1,6 +1,7 @@
 package org.wcong.test.springboot;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.endpoint.AbstractEndpoint;
 import org.springframework.boot.actuate.endpoint.Endpoint;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -91,24 +92,13 @@ public class CustomizeEndPoint {
         }
     }
 
-    public static class MyEndPoint implements Endpoint {
+    public static class MyEndPoint  extends AbstractEndpoint implements Endpoint {
 
         private List<MemStatus> status;
 
         public MyEndPoint(List<MemStatus> status) {
+            super("my",false);
             this.status = status;
-        }
-
-        public String getId() {
-            return "my";
-        }
-
-        public boolean isEnabled() {
-            return true;
-        }
-
-        public boolean isSensitive() {
-            return false;
         }
 
         public Object invoke() {
