@@ -73,7 +73,7 @@
     }
 ```
 ### 自定义Conditional
-所以自定义*Conditional*就是通过自定义注解和Condition的实现类。
+所以自定义*Conditional*就是通过自定义注解和Condition的实现类。完整的代码在[Github](https://github.com/wcong/learn-java/blob/master/src/main/java/org/wcong/test/springboot/CustomizeConditional.java)
 1. 定义*@ConditionalOnMyProperties*
 ```
     @Target({ElementType.TYPE, ElementType.METHOD})

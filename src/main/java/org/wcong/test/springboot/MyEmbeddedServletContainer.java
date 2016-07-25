@@ -34,7 +34,7 @@ public class MyEmbeddedServletContainer implements EmbeddedServletContainer {
 	public void start() throws EmbeddedServletContainerException {
 		try {
 			httpServer = HttpServer.create();
-			httpServer.bind(new InetSocketAddress("127.0.0.1", 8080), 0);
+			httpServer.bind(new InetSocketAddress("127.0.0.1", getPort()), 0);
 			httpServer.createContext("/", httpHandler);
 			httpServer.start();
 			System.out.println("start http server");
@@ -48,7 +48,7 @@ public class MyEmbeddedServletContainer implements EmbeddedServletContainer {
 	}
 
 	public int getPort() {
-		return 80;
+		return 8080;
 	}
 
 	public static class MyHttpHandler implements HttpHandler {
@@ -65,7 +65,7 @@ public class MyEmbeddedServletContainer implements EmbeddedServletContainer {
 			MockHttpServletRequest httpServletRequest = new MockHttpServletRequest();
 			httpServletRequest.setPathInfo(httpExchange.getRequestURI().getPath());
 			httpServletRequest.setRequestURI(httpExchange.getRequestURI().toString());
-			MockHttpServletRequest request = new MockHttpServletRequest("GET", "/");
+			MockHttpServletRequest request = new MockHttpServletRequest(httpExchange.getRequestMethod(), httpExchange.getRequestURI().getPath());
 			MockHttpServletResponse httpServletResponse = new MockHttpServletResponse();
 			try {
 				dispatcherServlet.service(request, httpServletResponse);
