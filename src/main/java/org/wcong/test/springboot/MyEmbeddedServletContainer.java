@@ -60,8 +60,6 @@ public class MyEmbeddedServletContainer implements EmbeddedServletContainer {
 		}
 
 		public void handle(HttpExchange httpExchange) throws IOException {
-			System.out.println("get msg");
-			System.out.println(httpExchange.getRequestHeaders());
 			MockHttpServletRequest httpServletRequest = new MockHttpServletRequest();
 			httpServletRequest.setPathInfo(httpExchange.getRequestURI().getPath());
 			httpServletRequest.setRequestURI(httpExchange.getRequestURI().toString());
