@@ -60,7 +60,7 @@ public interface EmbeddedServletContainer {
 
 ### 自定义*EmbeddedServletContainer*
 所以自定义需要实现*EmbeddedServletContainer*和*EmbeddedServletContainerFactory*两个接口，
-另外SpringWeb强依赖*ServletContext*所以必须自定义一个简单的*ServletContext*，完整的代码还是放在[Github](https://github.com/wcong/learn-java/blob/master/src/main/java/org/wcong/test/springboot/CustomizeServletContainer.java)上了
+另外SpringWeb强依赖*ServletContext*所以必须自定义一个简单的*ServletContext*，完整的代码还是放在[Github](https://github.com/wcong/learn-java/blob/master/src/main/java/org/wcong/test/springboot/CustomizeServletContainer.java)上了。
 
 1. 自定义*EmbeddedServletContainer*，这里使用Java内置的*HttpServer*提供http服务。
 接收到请求后转发给*DispatcherServlet*进行处理。然后把response转换成*HttpServer*的输出结果。
@@ -166,6 +166,6 @@ public interface EmbeddedServletContainer {
         }
 	}
 ```
-运行程序，正常访问就可以输出hello world;
+运行程序，正常访问就可以输出hello world。
 ### 结语
 Spring基本覆盖了主流的JavaServlet容器，自己实现就太过复杂了，就没法模拟完整的Servlet的功能，但基本的原理是一致的。
