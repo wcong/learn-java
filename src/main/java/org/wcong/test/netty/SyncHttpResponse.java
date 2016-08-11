@@ -20,45 +20,54 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseDecoder;
 import io.netty.handler.codec.http.HttpVersion;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 
 /**
  * get http response sync
  * Created by wcong on 2016/8/8.
  */
 public class SyncHttpResponse {
-    public static void main(String[] args) throws InterruptedException, URISyntaxException, UnsupportedEncodingException {
-        final ClientHandler clientHandler = new ClientHandler();
-        EventLoopGroup loopGroup = new NioEventLoopGroup();
+    public static void main(String[] args) throws Exception {
+        HttpClient client = new HttpClient("http://www.baidu.com");
+        client.connect();
+        System.out.println(client.getBody());
+    }
 
-        Bootstrap b = new Bootstrap();
-        b.group(loopGroup).channel(NioSocketChannel.class).handler(new ChannelInitializer<SocketChannel>() {
-            @Override
-            protected void initChannel(SocketChannel ch) throws Exception {
-                ch.pipeline().
-                        addLast(new HttpRequestEncoder()).
-                        addLast(new HttpResponseDecoder()).
-                        addLast(clientHandler);
-            }
-        });
-        Channel channel = b.connect("www.baidu.com", 80).sync().channel();
-        while (!channel.isActive()) {
-            Thread.sleep(1000);
+    public static class HttpClient {
+        private ClientHandler clientHandler = new ClientHandler();
+        private String url;
+        private URI uri;
+
+        public HttpClient(String url) {
+            this.url = url;
         }
-        URI uri = new URI("https://www.baidu.com");
-        DefaultFullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET,
-                uri.toASCIIString());
 
-        // 构建http请求
-        request.headers().set(HttpHeaders.Names.HOST, "www.baidu.com");
-        request.headers().set(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
-        request.headers().set(HttpHeaders.Names.CONTENT_LENGTH, request.content().readableBytes());
-        ChannelPromise promise = clientHandler.sendMessage(request);
-        promise.await();
-        System.out.println(clientHandler.getData());
-        channel.close();
+        public void connect() throws Exception {
+            uri = new URI(url);
+            EventLoopGroup loopGroup = new NioEventLoopGroup();
+            Bootstrap b = new Bootstrap();
+            b.group(loopGroup).channel(NioSocketChannel.class).handler(new ChannelInitializer<SocketChannel>() {
+                @Override
+                protected void initChannel(SocketChannel ch) throws Exception {
+                    ch.pipeline().addLast(new HttpRequestEncoder()).addLast(new HttpResponseDecoder()).addLast(clientHandler);
+                }
+            });
+            Channel channel = b.connect(uri.getHost(), uri.getPort() < 0 ? 80 : uri.getPort()).sync().channel();
+            while (!channel.isActive()) {
+                Thread.sleep(1000);
+            }
+        }
+
+        public String getBody() throws Exception {
+            DefaultFullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, uri.toASCIIString());
+            request.headers().set(HttpHeaders.Names.HOST, uri.getHost());
+            request.headers().set(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
+            request.headers().set(HttpHeaders.Names.CONTENT_LENGTH, request.content().readableBytes());
+            ChannelPromise promise = clientHandler.sendMessage(request);
+            promise.await();
+            return clientHandler.getData();
+        }
     }
 
     public static class ClientHandler extends ChannelInboundHandlerAdapter {
@@ -91,12 +100,13 @@ public class SyncHttpResponse {
                 HttpResponse response = (HttpResponse) msg;
                 contentLength = Long.parseLong(response.headers().get(HttpHeaders.Names.CONTENT_LENGTH));
                 readByte = 0;
+                data = "";
             }
             if (msg instanceof HttpContent) {
                 HttpContent content = (HttpContent) msg;
                 ByteBuf buf = content.content();
                 readByte += buf.readableBytes();
-                data += buf.toString(io.netty.util.CharsetUtil.UTF_8);
+                data += buf.toString(Charset.forName("gb2312"));
                 if (readByte >= contentLength) {
                     promise.setSuccess();
                 }
