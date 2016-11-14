@@ -6,6 +6,7 @@ import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
@@ -48,7 +49,8 @@ public class JavaFileTest {
 		MethodSpec.Builder setMethodSpecBuilder = MethodSpec.methodBuilder("setHello");
 		setMethodSpecBuilder.addModifiers(Modifier.PUBLIC);
 		setMethodSpecBuilder.returns(TypeName.VOID);
-		setMethodSpecBuilder.addParameter(TypeName.get(String.class), "hello");
+		ParameterSpec.Builder parameterBuilder = ParameterSpec.builder(TypeName.get(String.class), "hello");
+		setMethodSpecBuilder.addParameter(parameterBuilder.build());
 		setMethodSpecBuilder.addCode(CodeBlock.builder().add("this.hello = hello;").build());
 		methodSpecList.add(setMethodSpecBuilder.build());
 		return methodSpecList;
