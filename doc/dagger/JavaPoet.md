@@ -36,53 +36,66 @@ Use beautiful Java code to generate beautiful Java code
         <version>1.7.0</version>
     </dependency>
 ```
-这里使用JavaPoet定义了一个简单的Java类,完整的代码放在[Github]().
-
-``` java
-    public class JavaFileTest {
-        public static void main(String[] args) {
-            TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder("JavaFile");
-            typeSpecBuilder.addAnnotation(makeAnnotationSpec());
-            typeSpecBuilder.addField(makeFieldSpec());
-            typeSpecBuilder.addMethods(makeMethodSpec());
-            JavaFile.Builder javaFileBuilder = JavaFile.builder("org.wcong.test.poet", typeSpecBuilder.build());
-            System.out.println(javaFileBuilder.build().toString());
-        }
-        static AnnotationSpec makeAnnotationSpec() {
-            AnnotationSpec.Builder builder = AnnotationSpec.builder(ClassName.get("org.wcong.test.poet", "MyAnnotation"));
-            CodeBlock.Builder codeBlockBuilder = CodeBlock.builder().add("$S", "world");
-            builder.addMember("hello", codeBlockBuilder.build());
-            return builder.build();
-        }   
-        static FieldSpec makeFieldSpec() {
-            FieldSpec.Builder fileSpecBuilder = FieldSpec.builder(String.class, "hello", Modifier.PRIVATE);
-            fileSpecBuilder.initializer(CodeBlock.of("\"world\""));
-            return fileSpecBuilder.build();
-        }   
-        static List<MethodSpec> makeMethodSpec() {
-            List<MethodSpec> methodSpecList = new ArrayList<MethodSpec>();
-            MethodSpec.Builder getMethodSpecBuilder = MethodSpec.methodBuilder("getHello");
-            getMethodSpecBuilder.addModifiers(Modifier.PUBLIC);
-            getMethodSpecBuilder.returns(TypeName.get(String.class));
-            getMethodSpecBuilder.addCode(CodeBlock.builder().add("return hello;").build());
-            methodSpecList.add(getMethodSpecBuilder.build());
-            MethodSpec.Builder setMethodSpecBuilder = MethodSpec.methodBuilder("setHello");
-            setMethodSpecBuilder.addModifiers(Modifier.PUBLIC);
-            setMethodSpecBuilder.returns(TypeName.VOID);
-            ParameterSpec.Builder parameterBuilder = ParameterSpec.builder(TypeName.get(String.class), "hello");
-            setMethodSpecBuilder.addParameter(parameterBuilder.build());
-            setMethodSpecBuilder.addCode(CodeBlock.builder().add("this.hello = hello;").build());
-            methodSpecList.add(setMethodSpecBuilder.build());
-            MethodSpec.Builder toStringBuilder = MethodSpec.methodBuilder("toString");
-            toStringBuilder.addModifiers(Modifier.PUBLIC);
-            toStringBuilder.returns(TypeName.get(String.class));
-            CodeBlock.Builder toStringCodeBuilder = CodeBlock.builder();
-            toStringCodeBuilder.beginControlFlow("if( hello != null )");
-            toStringCodeBuilder.add(CodeBlock.of("return \"hello\"+hello;"));
-            toStringCodeBuilder.endControlFlow();
-            toStringBuilder.addCode(toStringCodeBuilder.build());
-            methodSpecList.add(toStringBuilder.build());
-            return methodSpecList;
-        }
+这里使用JavaPoet定义了一个简单的Java类,完整的代码放在[Github](https://github.com/wcong/learn-java/blob/master/src/main/java/org/wcong/test/poet/JavaFileTest.java)。
+这里介绍一下主要的类。
+1. AnnotationSpec 添加*MyAnnotation*的注解，然后设置属性*hello=world*。
+```
+    private static AnnotationSpec makeAnnotationSpec() {
+        AnnotationSpec.Builder builder = AnnotationSpec.builder(ClassName.get("org.wcong.test.poet", "MyAnnotation"));
+        CodeBlock.Builder codeBlockBuilder = CodeBlock.builder().add("$S", "world");
+        builder.addMember("hello", codeBlockBuilder.build());
+        return builder.build();
     }
 ```
+2. FieldSpec 创建*hello*的字段并初始化为“world”。
+```
+    private static FieldSpec makeFieldSpec() {
+		FieldSpec.Builder fileSpecBuilder = FieldSpec.builder(String.class, "hello", Modifier.PRIVATE);
+		fileSpecBuilder.initializer(CodeBlock.of("\"world\""));
+		return fileSpecBuilder.build();
+	}
+```
+3. MethodSpec 创建*getHello*,*setHello*,*toString*方法。
+*toString*使用了*ControlFlow*判断了*hello*不等于null，返回"hello world"，等于null的时候返回空。
+```
+    private static MethodSpec makeToStringMethod() {
+		MethodSpec.Builder toStringBuilder = MethodSpec.methodBuilder("toString");
+		toStringBuilder.addModifiers(Modifier.PUBLIC);
+		toStringBuilder.returns(TypeName.get(String.class));
+		CodeBlock.Builder toStringCodeBuilder = CodeBlock.builder();
+		toStringCodeBuilder.beginControlFlow("if( hello != null )");
+		toStringCodeBuilder.add(CodeBlock.of("return \"hello \"+hello;"));
+		toStringCodeBuilder.endControlFlow();
+		toStringBuilder.addCode(toStringCodeBuilder.build());
+		return toStringBuilder.build();
+	}
+    private static MethodSpec makeSetMethod() {
+		MethodSpec.Builder setMethodSpecBuilder = MethodSpec.methodBuilder("setHello");
+		setMethodSpecBuilder.addModifiers(Modifier.PUBLIC);
+		setMethodSpecBuilder.returns(TypeName.VOID);
+		ParameterSpec.Builder parameterBuilder = ParameterSpec.builder(TypeName.get(String.class), "hello");
+		setMethodSpecBuilder.addParameter(parameterBuilder.build());
+		setMethodSpecBuilder.addCode(CodeBlock.builder().add("this.hello = hello;").build());
+		return setMethodSpecBuilder.build();
+	}
+	private static MethodSpec makeGetMethod() {
+		MethodSpec.Builder getMethodSpecBuilder = MethodSpec.methodBuilder("getHello");
+		getMethodSpecBuilder.addModifiers(Modifier.PUBLIC);
+		getMethodSpecBuilder.returns(TypeName.get(String.class));
+		getMethodSpecBuilder.addCode(CodeBlock.builder().add("return hello;").build());
+		return getMethodSpecBuilder.build();
+	}
+```
+4. JavaFile JavaPoet的主入口，用来描述Java源文件。
+```
+    public static void main(String[] args) {
+		TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder("JavaFile");
+		typeSpecBuilder.addAnnotation(makeAnnotationSpec());
+		typeSpecBuilder.addField(makeFieldSpec());
+		typeSpecBuilder.addMethods(makeMethodSpec());
+		JavaFile.Builder javaFileBuilder = JavaFile.builder("org.wcong.test.poet", typeSpecBuilder.build());
+		System.out.println(javaFileBuilder.build().toString());
+	}
+```
+### 结语
+dagger使用JavaPoet来保存自动生成的类的信息，并通过[JavaFormat](https://github.com/google/google-java-format)来格式化生成的Java源文件。后面会介绍关于JavaFormat的内容。
