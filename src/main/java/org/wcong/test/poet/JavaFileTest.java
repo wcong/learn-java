@@ -27,46 +27,54 @@ public class JavaFileTest {
 		System.out.println(javaFileBuilder.build().toString());
 	}
 
-	static AnnotationSpec makeAnnotationSpec() {
+	private static AnnotationSpec makeAnnotationSpec() {
 		AnnotationSpec.Builder builder = AnnotationSpec.builder(ClassName.get("org.wcong.test.poet", "MyAnnotation"));
 		CodeBlock.Builder codeBlockBuilder = CodeBlock.builder().add("$S", "world");
 		builder.addMember("hello", codeBlockBuilder.build());
 		return builder.build();
 	}
 
-	static FieldSpec makeFieldSpec() {
+	private static FieldSpec makeFieldSpec() {
 		FieldSpec.Builder fileSpecBuilder = FieldSpec.builder(String.class, "hello", Modifier.PRIVATE);
 		fileSpecBuilder.initializer(CodeBlock.of("\"world\""));
 		return fileSpecBuilder.build();
 	}
 
-	static List<MethodSpec> makeMethodSpec() {
+	private static List<MethodSpec> makeMethodSpec() {
 		List<MethodSpec> methodSpecList = new ArrayList<MethodSpec>();
+		methodSpecList.add(makeGetMethod());
+		methodSpecList.add(makeSetMethod());
+		methodSpecList.add(makeToStringMethod());
+		return methodSpecList;
+	}
 
-		MethodSpec.Builder getMethodSpecBuilder = MethodSpec.methodBuilder("getHello");
-		getMethodSpecBuilder.addModifiers(Modifier.PUBLIC);
-		getMethodSpecBuilder.returns(TypeName.get(String.class));
-		getMethodSpecBuilder.addCode(CodeBlock.builder().add("return hello;").build());
-		methodSpecList.add(getMethodSpecBuilder.build());
+	private static MethodSpec makeToStringMethod() {
+		MethodSpec.Builder toStringBuilder = MethodSpec.methodBuilder("toString");
+		toStringBuilder.addModifiers(Modifier.PUBLIC);
+		toStringBuilder.returns(TypeName.get(String.class));
+		CodeBlock.Builder toStringCodeBuilder = CodeBlock.builder();
+		toStringCodeBuilder.beginControlFlow("if( hello != null )");
+		toStringCodeBuilder.add(CodeBlock.of("return \"hello \"+hello;"));
+		toStringCodeBuilder.endControlFlow();
+		toStringBuilder.addCode(toStringCodeBuilder.build());
+		return toStringBuilder.build();
+	}
 
+	private static MethodSpec makeSetMethod() {
 		MethodSpec.Builder setMethodSpecBuilder = MethodSpec.methodBuilder("setHello");
 		setMethodSpecBuilder.addModifiers(Modifier.PUBLIC);
 		setMethodSpecBuilder.returns(TypeName.VOID);
 		ParameterSpec.Builder parameterBuilder = ParameterSpec.builder(TypeName.get(String.class), "hello");
 		setMethodSpecBuilder.addParameter(parameterBuilder.build());
 		setMethodSpecBuilder.addCode(CodeBlock.builder().add("this.hello = hello;").build());
-		methodSpecList.add(setMethodSpecBuilder.build());
+		return setMethodSpecBuilder.build();
+	}
 
-		MethodSpec.Builder toStringBuilder = MethodSpec.methodBuilder("toString");
-		toStringBuilder.addModifiers(Modifier.PUBLIC);
-		toStringBuilder.returns(TypeName.get(String.class));
-		CodeBlock.Builder toStringCodeBuilder = CodeBlock.builder();
-		toStringCodeBuilder.beginControlFlow("if( hello != null )");
-		toStringCodeBuilder.add(CodeBlock.of("return \"hello\"+hello;"));
-		toStringCodeBuilder.endControlFlow();
-		toStringBuilder.addCode(toStringCodeBuilder.build());
-		methodSpecList.add(toStringBuilder.build());
-
-		return methodSpecList;
+	private static MethodSpec makeGetMethod() {
+		MethodSpec.Builder getMethodSpecBuilder = MethodSpec.methodBuilder("getHello");
+		getMethodSpecBuilder.addModifiers(Modifier.PUBLIC);
+		getMethodSpecBuilder.returns(TypeName.get(String.class));
+		getMethodSpecBuilder.addCode(CodeBlock.builder().add("return hello;").build());
+		return getMethodSpecBuilder.build();
 	}
 }

@@ -1,14 +1,34 @@
 ### 前言
 最近在用[dagger](https://github.com/google/dagger)开发应用，dagger是google在[square](https://github.com/square/dagger)的基础上去反射的依赖注入框架。
-dagger会根据定义的直接在编译阶段自动生成依赖注入的代码，来减少运行期间反射的开销。
-dagger依赖了square的JavaPoet和JavaFormat来实现编译代码。这里主要介绍下JavaPoet。
+dagger会根据定义的注解在编译阶段自动生成依赖注入的代码，来减少运行期间反射的开销。
+dagger依赖了JavaPoet和JavaFormat来实现编译代码，这里主要介绍下JavaPoet的内容和使用。
 
 ### JavaPoet
-JavaPoet这样定义自己的项目.
+JavaPoet这样定义自己的项目。
 ```
 Use beautiful Java code to generate beautiful Java code
 ```
-所以JavaPoet定义了一系列类来尽可能优雅的描述java源文件的结构.通过下面的maven定义可以引用JavaPoet包
+所以JavaPoet定义了一系列类来尽可能优雅的描述java源文件的结构。观察JavaPoet的代码主要的接口可以分为以下几种：
+
+* Spec 用来描述Java中基本的元素，包括类型，注解，字段，方法和参数
+    * AnnotationSpec
+    * FieldSpec
+    * MethodSpec
+    * ParameterSpec
+    * TypeSpec
+* Name 用来描述类型的引用，包括Void,和元素类型（int，long等）
+    * TypeName
+    * ArrayTypeName
+    * ClassName
+    * ParameterizedTypeName
+    * TypeVariableName
+    * WildcardTypeName
+* CodeBlock 用来描述代码块的内容，包括普通的赋值，if判断，循环判断等
+* JavaFile 完整的Java文件
+* CodeWriter 读取JavaFile并转换成Java源文件
+
+### 使用样例
+通过下面的maven定义可以引用JavaPoet包。
 ```
     <dependency>
         <groupId>com.squareup</groupId>
@@ -16,29 +36,6 @@ Use beautiful Java code to generate beautiful Java code
         <version>1.7.0</version>
     </dependency>
 ```
-观察JavaPoet的代码主要的接口可以分为以下几种
-
-* Spec 
-    * AnnotationSpec
-    * FieldSpec
-    * MethodSpec
-    * ParameterSpec
-    * TypeSpec
-    *
-* Name
-    * TypeName
-    * ArrayTypeName
-    * ClassName
-    * ParameterizedTypeName
-    * TypeVariableName
-    * WildcardTypeName
-* CodeBlock
-* CodeWriter
-* JavaFile
-* Util
-* NameAllocator
-
-### 使用样例
 这里使用JavaPoet定义了一个简单的Java类,完整的代码放在[Github]().
 
 ``` java
