@@ -54,7 +54,9 @@ public class JavaFileTest {
 		toStringBuilder.returns(TypeName.get(String.class));
 		CodeBlock.Builder toStringCodeBuilder = CodeBlock.builder();
 		toStringCodeBuilder.beginControlFlow("if( hello != null )");
-		toStringCodeBuilder.add(CodeBlock.of("return \"hello \"+hello;"));
+		toStringCodeBuilder.add(CodeBlock.of("return \"hello \"+hello;\n"));
+		toStringCodeBuilder.nextControlFlow("else");
+		toStringCodeBuilder.add(CodeBlock.of("return \"\";\n"));
 		toStringCodeBuilder.endControlFlow();
 		toStringBuilder.addCode(toStringCodeBuilder.build());
 		return toStringBuilder.build();
@@ -66,7 +68,7 @@ public class JavaFileTest {
 		setMethodSpecBuilder.returns(TypeName.VOID);
 		ParameterSpec.Builder parameterBuilder = ParameterSpec.builder(TypeName.get(String.class), "hello");
 		setMethodSpecBuilder.addParameter(parameterBuilder.build());
-		setMethodSpecBuilder.addCode(CodeBlock.builder().add("this.hello = hello;").build());
+		setMethodSpecBuilder.addCode(CodeBlock.builder().add("this.hello = hello;\n").build());
 		return setMethodSpecBuilder.build();
 	}
 
@@ -74,7 +76,7 @@ public class JavaFileTest {
 		MethodSpec.Builder getMethodSpecBuilder = MethodSpec.methodBuilder("getHello");
 		getMethodSpecBuilder.addModifiers(Modifier.PUBLIC);
 		getMethodSpecBuilder.returns(TypeName.get(String.class));
-		getMethodSpecBuilder.addCode(CodeBlock.builder().add("return hello;").build());
+		getMethodSpecBuilder.addCode(CodeBlock.builder().add("return hello;\n").build());
 		return getMethodSpecBuilder.build();
 	}
 }
