@@ -16,11 +16,6 @@
             <artifactId>javapoet</artifactId>
             <version>1.7.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.google.auto.service</groupId>
-            <artifactId>auto-service</artifactId>
-            <version>1.0-rc2</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -33,6 +28,7 @@
                     <source>1.7</source>
                     <target>1.7</target>
                     <encoding>UTF-8</encoding>
+                    <compilerArgument>-proc:none</compilerArgument>
                 </configuration>
             </plugin>
         </plugins>

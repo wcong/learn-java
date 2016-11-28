@@ -1,6 +1,5 @@
 package org.wcong.test.autovalue;
 
-import com.google.auto.service.AutoService;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
@@ -12,7 +11,6 @@ import com.squareup.javapoet.TypeSpec;
 
 import javax.annotation.Generated;
 import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
@@ -34,7 +32,6 @@ import java.util.Set;
  * process for MyAutoValue
  * Created by wcong on 2016/11/25.
  */
-@AutoService(Processor.class)
 public class MyAutoValueProcessor extends AbstractProcessor {
 
     @Override
@@ -55,7 +52,6 @@ public class MyAutoValueProcessor extends AbstractProcessor {
         if (elements == null || elements.isEmpty()) {
             return false;
         }
-        processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING,elements.toString());
         for (Element element : elements) {
             if (!(element instanceof TypeElement)) {
                 continue;
