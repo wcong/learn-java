@@ -218,34 +218,34 @@
         </dependency>
 
         <!--<dependency>-->
-            <!--<groupId>com.atomikos</groupId>-->
-            <!--<artifactId>transactions-jta</artifactId>-->
-            <!--<version>${atomikos.version}</version>-->
+        <!--<groupId>com.atomikos</groupId>-->
+        <!--<artifactId>transactions-jta</artifactId>-->
+        <!--<version>${atomikos.version}</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>com.atomikos</groupId>-->
-            <!--<artifactId>transactions-jdbc</artifactId>-->
-            <!--<version>${atomikos.version}</version>-->
+        <!--<groupId>com.atomikos</groupId>-->
+        <!--<artifactId>transactions-jdbc</artifactId>-->
+        <!--<version>${atomikos.version}</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>com.atomikos</groupId>-->
-            <!--<artifactId>transactions</artifactId>-->
-            <!--<version>${atomikos.version}</version>-->
+        <!--<groupId>com.atomikos</groupId>-->
+        <!--<artifactId>transactions</artifactId>-->
+        <!--<version>${atomikos.version}</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>com.atomikos</groupId>-->
-            <!--<artifactId>transactions-api</artifactId>-->
-            <!--<version>${atomikos.version}</version>-->
+        <!--<groupId>com.atomikos</groupId>-->
+        <!--<artifactId>transactions-api</artifactId>-->
+        <!--<version>${atomikos.version}</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>com.atomikos</groupId>-->
-            <!--<artifactId>transactions-jms</artifactId>-->
-            <!--<version>${atomikos.version}</version>-->
+        <!--<groupId>com.atomikos</groupId>-->
+        <!--<artifactId>transactions-jms</artifactId>-->
+        <!--<version>${atomikos.version}</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>com.atomikos</groupId>-->
-            <!--<artifactId>atomikos-util</artifactId>-->
-            <!--<version>${atomikos.version}</version>-->
+        <!--<groupId>com.atomikos</groupId>-->
+        <!--<artifactId>atomikos-util</artifactId>-->
+        <!--<version>${atomikos.version}</version>-->
         <!--</dependency>-->
 
         <dependency>
@@ -319,4 +319,20 @@
         </dependency>
 
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <encoding>UTF-8</encoding>
+                    <showWarnings>false</showWarnings>
+                    <showDeprecation>false</showDeprecation>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
