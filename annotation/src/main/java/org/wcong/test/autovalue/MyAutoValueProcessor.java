@@ -35,7 +35,7 @@ import java.util.Set;
  * Created by wcong on 2016/11/25.
  */
 @AutoService(Processor.class)
-public class MyAutoValueProcesser extends AbstractProcessor {
+public class MyAutoValueProcessor extends AbstractProcessor {
 
     @Override
     public SourceVersion getSupportedSourceVersion() {
@@ -45,7 +45,7 @@ public class MyAutoValueProcesser extends AbstractProcessor {
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         Set<String> annotationTypes = new HashSet<>();
-        annotationTypes.add(MyAutoValue.class.toString());
+        annotationTypes.add(MyAutoValue.class.getName());
         return annotationTypes;
     }
 
@@ -55,16 +55,17 @@ public class MyAutoValueProcesser extends AbstractProcessor {
         if (elements == null || elements.isEmpty()) {
             return false;
         }
-//        for (Element element : elements) {
-//            if (!(element instanceof TypeElement)) {
-//                continue;
-//            }
-//            try {
-//                processType(element);
-//            } catch (Exception e) {
-//                processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage());
-//            }
-//        }
+        processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING,elements.toString());
+        for (Element element : elements) {
+            if (!(element instanceof TypeElement)) {
+                continue;
+            }
+            try {
+                processType(element);
+            } catch (Exception e) {
+                processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage());
+            }
+        }
         return false;
     }
 

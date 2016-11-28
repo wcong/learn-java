@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.wcong</groupId>
-    <artifactId>learn-spring</artifactId>
+    <artifactId>learn-java</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>learn-spring</name>
+    <name>learn-java</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -316,6 +316,11 @@
             <groupId>org.eclipse.jdt</groupId>
             <artifactId>org.eclipse.jdt.core</artifactId>
             <version>3.10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wcong</groupId>
+            <artifactId>learn-java-annotation</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
