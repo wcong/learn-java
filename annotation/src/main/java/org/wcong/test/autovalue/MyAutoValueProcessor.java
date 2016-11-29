@@ -23,7 +23,7 @@ import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import java.io.IOException;
 import java.io.Writer;
-import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -59,7 +59,7 @@ public class MyAutoValueProcessor extends AbstractProcessor {
             try {
                 processType(element);
             } catch (Exception e) {
-                processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage());
+                processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage(), element);
             }
         }
         return false;
@@ -70,6 +70,7 @@ public class MyAutoValueProcessor extends AbstractProcessor {
         String className = element.getSimpleName() + "_MyAutoValue";
         TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(className);
         typeSpecBuilder.addAnnotation(makeAnnotationSpec());
+        typeSpecBuilder.addModifiers(Modifier.PUBLIC);
         String packageName = getPackageName(typeElement);
         try {
             makeFields(typeElement, typeSpecBuilder);
@@ -106,13 +107,38 @@ public class MyAutoValueProcessor extends AbstractProcessor {
         if (elementList == null || elementList.isEmpty()) {
             return;
         }
+        List<String> fieldList = new ArrayList<>(elementList.size());
         for (VariableElement variableElement : elementList) {
             String fieldName = variableElement.getSimpleName().toString();
-            Type type = Class.forName(variableElement.asType().toString());
-            typeSpecBuilder.addField(makeFieldSpec(fieldName, type));
-            typeSpecBuilder.addMethod(makeSetMethod(fieldName, type));
-            typeSpecBuilder.addMethod(makeGetMethod(fieldName, type));
+            fieldList.add(fieldName);
+            TypeName typeName = TypeName.get(variableElement.asType());
+            typeSpecBuilder.addField(makeFieldSpec(fieldName, typeName));
+            typeSpecBuilder.addMethod(makeSetMethod(fieldName, typeName));
+            typeSpecBuilder.addMethod(makeGetMethod(fieldName, typeName));
         }
+        typeSpecBuilder.addMethod(makeToStringMethod(fieldList));
+    }
+
+    private MethodSpec makeToStringMethod(List<String> fieldList) {
+        MethodSpec.Builder toStringMethodSpecBuilder = MethodSpec.methodBuilder("toString");
+        toStringMethodSpecBuilder.addModifiers(Modifier.PUBLIC);
+        toStringMethodSpecBuilder.returns(TypeName.get(String.class));
+        CodeBlock.Builder codeBuilder = CodeBlock.builder();
+        if (fieldList != null && !fieldList.isEmpty()) {
+            StringBuilder toStringBuilder = new StringBuilder(fieldList.size() * 10);
+            for (String field : fieldList) {
+                if (toStringBuilder.length() > 0) {
+                    toStringBuilder.append(",");
+                }
+                toStringBuilder.append("\\\"").append(field).append("\\\"")
+                        .append(":\\\"\"+").append(field).append("+\"\\\"");
+            }
+            codeBuilder.add("return \"{" + toStringBuilder.toString() + "}\";");
+        } else {
+            codeBuilder.add("return \"{}\";");
+        }
+        toStringMethodSpecBuilder.addCode(codeBuilder.build());
+        return toStringMethodSpecBuilder.build();
     }
 
     private AnnotationSpec makeAnnotationSpec() {
@@ -122,17 +148,17 @@ public class MyAutoValueProcessor extends AbstractProcessor {
         return builder.build();
     }
 
-    private static FieldSpec makeFieldSpec(String fieldName, Type type) {
-        FieldSpec.Builder fileSpecBuilder = FieldSpec.builder(type, fieldName, Modifier.PRIVATE);
+    private static FieldSpec makeFieldSpec(String fieldName, TypeName typeName) {
+        FieldSpec.Builder fileSpecBuilder = FieldSpec.builder(typeName, fieldName, Modifier.PRIVATE);
         return fileSpecBuilder.build();
     }
 
-    private MethodSpec makeSetMethod(String fieldName, Type type) {
+    private MethodSpec makeSetMethod(String fieldName, TypeName typeName) {
         String upperFieldName = getUpperString(fieldName);
         MethodSpec.Builder setMethodSpecBuilder = MethodSpec.methodBuilder("set" + upperFieldName);
         setMethodSpecBuilder.addModifiers(Modifier.PUBLIC);
         setMethodSpecBuilder.returns(TypeName.VOID);
-        ParameterSpec.Builder parameterBuilder = ParameterSpec.builder(type, fieldName);
+        ParameterSpec.Builder parameterBuilder = ParameterSpec.builder(typeName, fieldName);
         setMethodSpecBuilder.addParameter(parameterBuilder.build());
         setMethodSpecBuilder.addCode(CodeBlock.builder().add("this." + fieldName + " = " + fieldName + ";\n").build());
         return setMethodSpecBuilder.build();
@@ -147,11 +173,11 @@ public class MyAutoValueProcessor extends AbstractProcessor {
         return fieldName;
     }
 
-    private MethodSpec makeGetMethod(String fieldName, Type type) {
+    private MethodSpec makeGetMethod(String fieldName, TypeName typeName) {
         String upperFieldName = getUpperString(fieldName);
         MethodSpec.Builder getMethodSpecBuilder = MethodSpec.methodBuilder("get" + upperFieldName);
         getMethodSpecBuilder.addModifiers(Modifier.PUBLIC);
-        getMethodSpecBuilder.returns(type);
+        getMethodSpecBuilder.returns(typeName);
         getMethodSpecBuilder.addCode(CodeBlock.builder().add("return " + fieldName + ";\n").build());
         return getMethodSpecBuilder.build();
     }

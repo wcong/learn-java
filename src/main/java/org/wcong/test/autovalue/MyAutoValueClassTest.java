@@ -10,4 +10,6 @@ public class MyAutoValueClassTest {
 
     private String b;
 
+    private int c;
+
 }
