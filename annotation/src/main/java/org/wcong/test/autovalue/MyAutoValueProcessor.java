@@ -50,7 +50,7 @@ public class MyAutoValueProcessor extends AbstractProcessor {
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(MyAutoValue.class);
         if (elements == null || elements.isEmpty()) {
-            return false;
+            return true;
         }
         for (Element element : elements) {
             if (!(element instanceof TypeElement)) {
@@ -62,7 +62,7 @@ public class MyAutoValueProcessor extends AbstractProcessor {
                 processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage(), element);
             }
         }
-        return false;
+        return true;
     }
 
     private void processType(Element element) {
@@ -73,7 +73,7 @@ public class MyAutoValueProcessor extends AbstractProcessor {
         typeSpecBuilder.addModifiers(Modifier.PUBLIC);
         String packageName = getPackageName(typeElement);
         try {
-            makeFields(typeElement, typeSpecBuilder);
+            makeFieldAndMethod(typeElement, typeSpecBuilder);
         } catch (ClassNotFoundException e) {
             processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage());
         }
@@ -102,7 +102,7 @@ public class MyAutoValueProcessor extends AbstractProcessor {
         }
     }
 
-    private void makeFields(Element element, TypeSpec.Builder typeSpecBuilder) throws ClassNotFoundException {
+    private void makeFieldAndMethod(Element element, TypeSpec.Builder typeSpecBuilder) throws ClassNotFoundException {
         List<VariableElement> elementList = ElementFilter.fieldsIn(element.getEnclosedElements());
         if (elementList == null || elementList.isEmpty()) {
             return;
