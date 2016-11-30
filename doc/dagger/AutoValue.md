@@ -13,7 +13,7 @@ AutoValue嵌入到JavaClass的编译过程，读取被注解的类，来创建�
     }
 ```
 2. 注册*processor*，AutoValue的jar包中的*META-INF/services*路径里面包含文件*javax.annotation.processing.Processor*，文件里包含了注册的*processor*，换行分割。这里面注册了*AutoValueProcessor*。
-3. *AutoValueProcessor*的*process*方法实现了主要的处理逻辑，读取注释的类的信息，构造新的类，并写入文件。
+3. *AutoValueProcessor*的*process*方法实现了主要的处理逻辑，读取注释的类的信息，构造新的类，并写入文件。*processType*方法是处理单个类的方法，主要的逻辑如下
 ```
 	AutoValueTemplateVars vars = new AutoValueTemplateVars();
     vars.pkg = TypeSimplifier.packageNameOf(type);
@@ -191,5 +191,6 @@ public class MyAutoValueClassTest_MyAutoValue {
     }
 }
 ```
+
 ### 结语
 dagger的实现跟AutoValue类似，也是根据注解嵌入编译实现新的类，只是AutoValue的逻辑比较简单，只是实现ValueClass的构造，dagger会涉及到更多依赖注入的功能。后面会介绍更多dagger的内容。
