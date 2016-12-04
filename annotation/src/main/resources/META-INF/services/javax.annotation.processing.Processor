@@ -1,1 +1,2 @@
 org.wcong.test.autovalue.MyAutoValueProcessor
+com.wcong.test.mydagger.MyComponentProcessor
