@@ -1,4 +1,4 @@
-package com.wcong.test.mydagger;
+package org.wcong.test.mydagger;
 
 /**
  * @author wcong<wc19920415@gmail.com>

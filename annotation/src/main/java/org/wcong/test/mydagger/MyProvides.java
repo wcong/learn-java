@@ -1,4 +1,4 @@
-package com.wcong.test.mydagger;
+package org.wcong.test.mydagger;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

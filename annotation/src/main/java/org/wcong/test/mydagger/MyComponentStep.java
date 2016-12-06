@@ -1,4 +1,4 @@
-package com.wcong.test.mydagger;
+package org.wcong.test.mydagger;
 
 import com.google.auto.common.BasicAnnotationProcessor;
 import com.google.common.collect.SetMultimap;

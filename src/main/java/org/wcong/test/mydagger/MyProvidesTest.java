@@ -1,6 +1,6 @@
 package org.wcong.test.mydagger;
 
-import com.wcong.test.mydagger.MyProvides;
+import javax.inject.Inject;
 
 /**
  * @author wcong<wc19920415@gmail.com>
@@ -8,5 +8,10 @@ import com.wcong.test.mydagger.MyProvides;
  */
 @MyProvides
 public class MyProvidesTest {
+
+    @Inject
+    public MyProvidesTest(MyProvidesTest1 myProvidesTest1) {
+
+    }
 
 }
