@@ -79,6 +79,7 @@ public class MyComponentStep implements BasicAnnotationProcessor.ProcessingStep 
         String className = "MyDagger_" + typeElement.getSimpleName().toString();
         TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(className);
         typeSpecBuilder.addSuperinterface(TypeName.get(element.asType()));
+
         List<ParameterizedTypeName> startTypeName = new ArrayList<>(10);
         List<ExecutableElement> methodList = ElementFilter.methodsIn(element.getEnclosedElements());
         Map<TypeMirror, ParameterizedTypeName> typeParameterizedMap = new HashMap<>();
@@ -97,6 +98,18 @@ public class MyComponentStep implements BasicAnnotationProcessor.ProcessingStep 
             typeSpecBuilder.addField(field, fieldNameMap.get(field), Modifier.PRIVATE);
         }
 
+        fieldsAndConstruct(typeSpecBuilder, fieldInitialList, fieldNameMap);
+
+        implementMethods(typeSpecBuilder, methodList, typeParameterizedMap, fieldNameMap);
+
+        String packageName = ElementUtils.getPackageName(typeElement);
+        JavaFile.Builder javaFileBuilder = JavaFile.builder(packageName, typeSpecBuilder.build());
+        String text = javaFileBuilder.build().toString();
+
+        ElementUtils.writeFile(filer,messager,className,text,element);
+    }
+
+    private void fieldsAndConstruct(TypeSpec.Builder typeSpecBuilder, Set<ParameterizedTypeName> fieldInitialList, Map<ParameterizedTypeName, String> fieldNameMap) {
         MethodSpec.Builder constructBuilder = MethodSpec.constructorBuilder();
         for (ParameterizedTypeName field : fieldInitialList) {
             String fieldName = fieldNameMap.get(field);
@@ -112,29 +125,15 @@ public class MyComponentStep implements BasicAnnotationProcessor.ProcessingStep 
             }
         }
         typeSpecBuilder.addMethod(constructBuilder.build());
+    }
 
+    private void implementMethods(TypeSpec.Builder typeSpecBuilder, List<ExecutableElement> methodList, Map<TypeMirror, ParameterizedTypeName> typeParameterizedMap, Map<ParameterizedTypeName, String> fieldNameMap) {
         for (ExecutableElement method : methodList) {
             MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder(method.getSimpleName().toString());
             methodBuilder.returns(TypeName.get(method.getReturnType()));
             methodBuilder.addModifiers(Modifier.PUBLIC);
             methodBuilder.addCode("return " + fieldNameMap.get(typeParameterizedMap.get(method.getReturnType())) + ".get();\n");
             typeSpecBuilder.addMethod(methodBuilder.build());
-        }
-
-        String packageName = ElementUtils.getPackageName(typeElement);
-        JavaFile.Builder javaFileBuilder = JavaFile.builder(packageName, typeSpecBuilder.build());
-        String text = javaFileBuilder.build().toString();
-
-        try {
-            JavaFileObject sourceFile = filer.createSourceFile(className, element);
-            Writer writer = sourceFile.openWriter();
-            try {
-                writer.write(text);
-            } finally {
-                writer.close();
-            }
-        } catch (IOException e) {
-            messager.printMessage(Diagnostic.Kind.ERROR, e.getMessage());
         }
     }
 

@@ -80,6 +80,7 @@ public class MyProvidesStep implements BasicAnnotationProcessor.ProcessingStep {
 		TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(className);
 		typeSpecBuilder.addSuperinterface(superClass);
 		typeSpecBuilder.addModifiers(Modifier.PUBLIC);
+
         List<TypeMirror> injectParams = getInjectConstructMethod(typeElement);
 		Map<String,ParameterizedTypeName> typeNameMap = makeProvideParams(injectParams);
         if( !typeNameMap.isEmpty() ){
@@ -98,17 +99,7 @@ public class MyProvidesStep implements BasicAnnotationProcessor.ProcessingStep {
 		JavaFile.Builder javaFileBuilder = JavaFile.builder(packageName, typeSpecBuilder.build());
 		String text = javaFileBuilder.build().toString();
 
-		try {
-			JavaFileObject sourceFile = filer.createSourceFile(className, element);
-			Writer writer = sourceFile.openWriter();
-			try {
-				writer.write(text);
-			} finally {
-				writer.close();
-			}
-		} catch (IOException e) {
-			messager.printMessage(Diagnostic.Kind.ERROR, e.getMessage());
-		}
+		ElementUtils.writeFile(filer,messager,className,text,element);
 	}
 
 	private MethodSpec makeContructMethod(Map<String,ParameterizedTypeName> typeNameMap){
