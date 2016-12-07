@@ -8,6 +8,7 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
+import org.wcong.test.util.ElementUtils;
 import org.wcong.test.util.ListUtils;
 
 import javax.annotation.processing.Filer;
@@ -44,9 +45,12 @@ public class MyProvidesStep implements BasicAnnotationProcessor.ProcessingStep {
 
 	private Messager messager;
 
-	public MyProvidesStep(Filer filer, Messager messager) {
+	private Map<ParameterizedTypeName,List<ParameterizedTypeName>> dependencyMap;
+
+	public MyProvidesStep(Filer filer, Messager messager,Map<ParameterizedTypeName,List<ParameterizedTypeName>> dependencyMap) {
 		this.messager = messager;
 		this.filer = filer;
+		this.dependencyMap = dependencyMap;
 	}
 
 	@Override
@@ -71,7 +75,7 @@ public class MyProvidesStep implements BasicAnnotationProcessor.ProcessingStep {
 	private void processProvideElement(Element element) {
 		TypeElement typeElement = (TypeElement) element;
 
-		String className = element.getSimpleName() + "_MyAutoValue_Factory";
+		String className = element.getSimpleName() + "_MyDagger_Factory";
 		ParameterizedTypeName superClass = ParameterizedTypeName.get(ClassName.get(Provider.class), TypeName.get(element.asType()));
 		TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(className);
 		typeSpecBuilder.addSuperinterface(superClass);
@@ -79,15 +83,18 @@ public class MyProvidesStep implements BasicAnnotationProcessor.ProcessingStep {
         List<TypeMirror> injectParams = getInjectConstructMethod(typeElement);
 		Map<String,ParameterizedTypeName> typeNameMap = makeProvideParams(injectParams);
         if( !typeNameMap.isEmpty() ){
+			List<ParameterizedTypeName> dependencyList = new ArrayList<>(typeNameMap.size());
             for( Map.Entry<String,ParameterizedTypeName> typeNameEntry : typeNameMap.entrySet() ){
+				dependencyList.add(typeNameEntry.getValue());
                 typeSpecBuilder.addField(typeNameEntry.getValue(),typeNameEntry.getKey(),Modifier.PRIVATE,Modifier.FINAL);
             }
+			dependencyMap.put(superClass,dependencyList);
 			typeSpecBuilder.addMethod(makeContructMethod(typeNameMap));
         }
 		typeSpecBuilder.addMethod(makeGetMethod(typeElement,typeNameMap));
 		typeSpecBuilder.addMethod(makeCreateMethod(className, superClass,typeNameMap));
 
-		String packageName = getPackageName(typeElement);
+		String packageName = ElementUtils.getPackageName(typeElement);
 		JavaFile.Builder javaFileBuilder = JavaFile.builder(packageName, typeSpecBuilder.build());
 		String text = javaFileBuilder.build().toString();
 
@@ -191,13 +198,4 @@ public class MyProvidesStep implements BasicAnnotationProcessor.ProcessingStep {
 		return createMethodSpecBuilder.build();
 	}
 
-	private String getPackageName(Element typeElement) {
-		while (true) {
-			Element enclosingElement = typeElement.getEnclosingElement();
-			if (enclosingElement instanceof PackageElement) {
-				return ((PackageElement) enclosingElement).getQualifiedName().toString();
-			}
-			typeElement = enclosingElement;
-		}
-	}
 }
