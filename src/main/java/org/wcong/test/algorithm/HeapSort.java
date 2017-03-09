@@ -1,6 +1,8 @@
 package org.wcong.test.algorithm;
 
 /**
+ * a*b,b*c,c*d,d*e
+ *
  * Created by hzwangcong on 2017/2/5.
  */
 public class HeapSort {

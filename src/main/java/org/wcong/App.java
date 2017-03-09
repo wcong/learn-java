@@ -2,7 +2,10 @@ package org.wcong;
 
 import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +16,10 @@ public class App {
     static int a;
 
     public static void main(String[] args) {
-        System.out.println(a);
+        DateFormat format = new SimpleDateFormat("M月d日");
+        System.out.println(format.format(new Date(2011,11,2)));
+        System.out.println(format.format(new Date(2011,0,12)));
+        System.out.println(format.format(new Date(2011,3,12)));
     }
 
     public static Class<?> findSuperClassParameterType(Object instance,  int parameterIndex) {
