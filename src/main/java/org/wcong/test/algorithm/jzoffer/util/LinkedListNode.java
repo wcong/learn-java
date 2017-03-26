@@ -10,4 +10,8 @@ public class LinkedListNode {
 
 	public LinkedListNode next;
 
+	public String toString() {
+		return String.valueOf(value);
+	}
+
 }
