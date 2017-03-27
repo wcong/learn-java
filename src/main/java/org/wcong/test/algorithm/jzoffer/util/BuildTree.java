@@ -21,14 +21,14 @@ public class BuildTree {
 			TreeNode left = new TreeNode();
 			left.value = array[leftNode];
 			treeNode.left = left;
-			buildTree(left, array, h + 1);
+			buildTree(left, array, leftNode);
 		}
 		int rightNode = h * 2 + 2;
 		if (rightNode < array.length) {
 			TreeNode right = new TreeNode();
 			right.value = array[rightNode];
 			treeNode.right = right;
-			buildTree(right, array, h + 1);
+			buildTree(right, array, rightNode);
 		}
 	}
 
