@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
- * test for array and partition and sorting TODO
+ * test for array and partition and sorting
  * Created by hzwangcong on 2017/3/27.
  */
 public class MinKNum {
