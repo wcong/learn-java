@@ -5,13 +5,13 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
- * test for array and partition and sorting
+ * test for array and partition and sorting TODO
  * Created by hzwangcong on 2017/3/27.
  */
 public class MinKNum {
 
     public static void main(String[] args) {
-        int[] array = new int[]{4, 5, 2, 1, 2, 4, 5, 6};
+        int[] array = new int[]{4, 5, 7, 1, 2, 4, 5, 6};
         minKNumPartition(array, 2);
         minKNumSort(array, 2);
     }
@@ -25,32 +25,32 @@ public class MinKNum {
             return array;
         }
         int start = 0, end = array.length - 1;
-        while (end != k) {
+        while (end != k - 1) {
             int middle = start + (end - start) / 2;
             int middleValue = array[middle];
             array[middle] = array[end];
             array[end] = middleValue;
-            int moreIndex = 0, lessIndex = end - 1;
-            while (moreIndex <= lessIndex) {
-                while (moreIndex < lessIndex && array[moreIndex] <= middleValue) {
-                    moreIndex += 1;
+            int i = start - 1;
+            for (int j = start; j < end; j++) {
+                if (array[j] <= middleValue) {
+                    i += 1;
+                    if (i != j) {
+                        int temp = array[i];
+                        array[i] = array[j];
+                        array[j] = temp;
+                    }
                 }
-                while (lessIndex > moreIndex && array[lessIndex] > middleValue) {
-                    lessIndex -= 1;
-                }
-                int temp = array[moreIndex];
-                array[moreIndex] = array[lessIndex];
-                array[lessIndex] = temp;
-                moreIndex += 1;
-                lessIndex -= 1;
             }
-            int temp = array[moreIndex];
-            array[moreIndex] = array[end];
+            i += 1;
+            int temp = array[i];
+            array[i] = array[end];
             array[end] = temp;
-            if (moreIndex >= k) {
-                end = moreIndex;
+            if (i == k - 1) {
+                end = i;
+            } else if (i > k - 1) {
+                end = k - 1;
             } else {
-                start = moreIndex;
+                start = i + 1;
             }
         }
         return Arrays.copyOf(array, k);
