@@ -19,25 +19,26 @@ public class ChangeBinaryTreeToDQueue {
     }
 
     public static TreeNode changeToDQueue(Tree tree) {
-        return changeToDQueue(tree.root);
+        TreeNode treeNode = changeToDQueue(tree.root, null);
+        while (treeNode.left != null) {
+            treeNode = treeNode.left;
+        }
+        return treeNode;
     }
 
-    private static TreeNode changeToDQueue(TreeNode treeNode) {
-        if (treeNode.left == null && treeNode.right == null) {
-            return treeNode;
-        }
+    private static TreeNode changeToDQueue(TreeNode treeNode, TreeNode lastInQueue) {
         if (treeNode.left != null) {
-            TreeNode node = changeToDQueue(treeNode.left);
-            node.right = treeNode;
-            treeNode.left = node;
+            lastInQueue = changeToDQueue(treeNode.left, lastInQueue);
         }
-        TreeNode right = treeNode;
+        if (lastInQueue != null) {
+            lastInQueue.right = treeNode;
+            treeNode.left = lastInQueue;
+        }
+        lastInQueue = treeNode;
         if (treeNode.right != null) {
-            TreeNode node = changeToDQueue(treeNode.right);
-            treeNode.right = node;
-            node.left = treeNode;
+            lastInQueue = changeToDQueue(treeNode.right, lastInQueue);
         }
-        return right;
+        return lastInQueue;
     }
 
 }
