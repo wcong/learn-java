@@ -60,7 +60,11 @@ public class BinaryTree {
                 root.key = replace.key;
             }
         } else {
-
+            if (key < root.key) {
+                deleteNodeInternal(root, root.left, key);
+            } else {
+                deleteNodeInternal(root, root.right, key);
+            }
         }
     }
 
@@ -71,12 +75,12 @@ public class BinaryTree {
         }
         if (node.key == key) {
             if (node.right == null && node.left == null) {
-                if( parent.left == node ){
+                if (parent.left == node) {
                     parent.left = null;
-                }else{
+                } else {
                     parent.right = null;
                 }
-            }else if( node.right == null ){
+            } else if (node.right == null) {
 
             }
         } else if (node.key < key) {
