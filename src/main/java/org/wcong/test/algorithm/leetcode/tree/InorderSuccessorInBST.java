@@ -3,42 +3,28 @@ package org.wcong.test.algorithm.leetcode.tree;
 /**
  * give a binary search tree and a node in it,find the inorder successor of the node in the bst
  * test for inorder tree walk,
- * if left child of parent the successor is parent
- * if right child of parent the successor is last inorder of left sub tree
+ * if right child is not null,find the min node in left sub tree;
+ * if right child is null,find the last  right ancestor.
  * Created by wcong on 2017/4/1.
  */
 public class InorderSuccessorInBST {
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
-    }
+	}
 
-    public static TreeNode inOrderSuccessor(TreeNode treeNode, TreeNode findNode) {
-        return successor(treeNode, null, findNode);
-    }
-
-    private static TreeNode successor(TreeNode treeNode, TreeNode parent, TreeNode findNode) {
-        if (treeNode.value == findNode.value) {
-            if (parent == null) {
-                return null;
-            } else if (parent.left == treeNode) {
-                return parent;
-            } else {
-                TreeNode successor = parent.left;
-                while (!(successor.left == null && successor.right == null)) {
-                    if (successor.right != null) {
-                        successor = successor.right;
-                        continue;
-                    }
-                    successor = successor.left;
-                }
-                return successor;
-            }
-        } else if (findNode.value < treeNode.value) {
-            return successor(treeNode.left, treeNode, findNode);
-        } else {
-            return successor(treeNode.right, treeNode, findNode);
-        }
-    }
+	public static TreeNode inOrderSuccessor(TreeNode root, TreeNode findNode) {
+		TreeNode lastLeftNode = null;
+		TreeNode compareNode = root;
+		while (compareNode != null) {
+			if (findNode.value < compareNode.value) {
+				lastLeftNode = compareNode;
+				compareNode = compareNode.left;
+			} else {
+				compareNode = compareNode.right;
+			}
+		}
+		return lastLeftNode;
+	}
 
 }
