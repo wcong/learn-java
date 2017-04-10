@@ -3,7 +3,7 @@ package org.wcong.test.algorithm.jzoffer.tree;
 import org.springframework.util.Assert;
 
 /**
- * test for binary tree post-order walk analysis
+ * test for binary search tree post-order walk analysis
  * give a array of integer judge is binary search tree post-order walk
  * for example 5,7,6,9,11,10,8 is true,7,4,6,5 is not
  *
