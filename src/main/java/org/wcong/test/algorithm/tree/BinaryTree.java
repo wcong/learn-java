@@ -14,11 +14,11 @@ public class BinaryTree {
             this.key = key;
         }
 
-        int key;
+        public int key;
 
-        Node left;
+        public Node left;
 
-        Node right;
+        public Node right;
 
     }
 
