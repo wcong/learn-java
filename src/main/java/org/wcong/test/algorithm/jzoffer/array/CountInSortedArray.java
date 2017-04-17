@@ -3,7 +3,7 @@ package org.wcong.test.algorithm.jzoffer.array;
 /**
  * test for array and binary search
  * give a sorted array count the target appear num
- * Created by hzwangcong on 2017/3/28.
+ * Created by wcong on 2017/3/28.
  */
 public class CountInSortedArray {
 

@@ -16,10 +16,7 @@ public class App {
     static int a;
 
     public static void main(String[] args) {
-        DateFormat format = new SimpleDateFormat("M月d日");
-        System.out.println(format.format(new Date(2011,11,2)));
-        System.out.println(format.format(new Date(2011,0,12)));
-        System.out.println(format.format(new Date(2011,3,12)));
+        System.out.println(3/2);
     }
 
     public static Class<?> findSuperClassParameterType(Object instance,  int parameterIndex) {
