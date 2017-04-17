@@ -1,4 +1,4 @@
-package org.wcong.test.algorithm.jzoffer;
+package org.wcong.test.algorithm.jzoffer.array;
 
 /**
  * test for array and binary search

@@ -1,4 +1,4 @@
-package org.wcong.test.algorithm.jzoffer;
+package org.wcong.test.algorithm.jzoffer.array;
 
 import java.util.Arrays;
 import java.util.Comparator;

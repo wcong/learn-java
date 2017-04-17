@@ -1,4 +1,4 @@
-package org.wcong.test.algorithm.jzoffer;
+package org.wcong.test.algorithm.jzoffer.linked_list;
 
 import java.util.List;
 

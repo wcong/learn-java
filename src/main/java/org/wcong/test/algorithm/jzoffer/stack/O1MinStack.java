@@ -1,4 +1,4 @@
-package org.wcong.test.algorithm.jzoffer;
+package org.wcong.test.algorithm.jzoffer.stack;
 
 import java.util.Stack;
 
