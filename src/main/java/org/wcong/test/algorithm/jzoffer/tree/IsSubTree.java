@@ -13,31 +13,42 @@ import org.wcong.test.algorithm.jzoffer.util.TreeNode;
  */
 public class IsSubTree {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-	}
+    }
 
-	public static boolean isSubTree(Tree tree, Tree subTree) {
-		if (tree == null || tree.root == null || subTree == null || subTree.root == null) {
-			return false;
-		}
-		TreeNode subNode = subTree.root;
-		TreeNode fromNode = findSameNode(tree.root, subNode);
-		return false;
-	}
+    public static boolean isSubTree(Tree tree, Tree subTree) {
+        if (tree == null || tree.root == null || subTree == null || subTree.root == null) {
+            return false;
+        }
+        TreeNode subNode = subTree.root;
+        return isSubTree(tree.root, subNode);
+    }
 
-	public static TreeNode findSameNode(TreeNode node, TreeNode example) {
-		if (node == null || example == null) {
-			return null;
-		}
-		if (node.value == example.value) {
-			return node;
-		}
-		TreeNode leftResult = findSameNode(node.left, example);
-		if (leftResult != null) {
-			return leftResult;
-		}
-		return findSameNode(node.right, example);
-	}
+    public static boolean isSubTree(TreeNode node, TreeNode example) {
+        if (example == null || node == null) {
+            return false;
+        }
+        if (node.value == example.value) {
+            if (isContainTree(node, example)) {
+                return true;
+            }
+        }
+        boolean isSub = isSubTree(node.left, example);
+        return isSub || isSubTree(node.right, example);
+    }
+
+    private static boolean isContainTree(TreeNode node, TreeNode example) {
+        if (example == null) {
+            return true;
+        }
+        if (node == null) {
+            return false;
+        }
+        if (node.value == example.value && isContainTree(node.left, example.left) && isContainTree(node.right, example.right)) {
+            return true;
+        }
+        return false;
+    }
 
 }
