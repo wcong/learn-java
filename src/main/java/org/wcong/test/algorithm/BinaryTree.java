@@ -81,11 +81,11 @@ public class BinaryTree {
         }
     }
 
-    static class Node {
-        int value;
+    public static class Node {
+        public int value;
 
-        Node left;
+        public Node left;
 
-        Node right;
+        public Node right;
     }
 }
