@@ -1,4 +1,4 @@
-package org.wcong.test.algorithm.cracking.dp;
+package org.wcong.test.algorithm.cracking.dp_divide_conque;
 
 /**
  *
