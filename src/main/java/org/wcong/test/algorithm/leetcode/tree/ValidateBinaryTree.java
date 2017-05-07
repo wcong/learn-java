@@ -6,24 +6,24 @@ package org.wcong.test.algorithm.leetcode.tree;
  */
 public class ValidateBinaryTree {
 
-    public static void main(String args) {
-    }
+	public static void main(String args) {
+	}
 
-    static int max = Integer.MIN_VALUE;
+	static int max = Integer.MIN_VALUE;
 
-    public static boolean validate(TreeNode treeNode) {
-        if (treeNode == null) {
-            return true;
-        }
-        if (!validate(treeNode.left)) {
-            return false;
-        }
-        if (treeNode.value >= max) {
-            max = treeNode.value;
-        } else {
-            return false;
-        }
-        return validate(treeNode.right);
-    }
+	public static boolean validate(TreeNode treeNode) {
+		if (treeNode == null) {
+			return true;
+		}
+		if (!validate(treeNode.left)) {
+			return false;
+		}
+		if (treeNode.val >= max) {
+			max = treeNode.val;
+		} else {
+			return false;
+		}
+		return validate(treeNode.right);
+	}
 
 }

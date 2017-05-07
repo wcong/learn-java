@@ -1,9 +1,9 @@
 package org.wcong;
 
+import org.wcong.test.hackerrank.string.PerfectString;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -43,31 +43,70 @@ public class App {
 			}
 		}
 	}
-	static String stringGameWinner(String s, String p){
+
+	static String stringGameWinner(String s, String p) {
 		// Complete this function
 		boolean amandaWin;
-		if( s.length()<p.length() ){
+		if (s.length() < p.length()) {
 			amandaWin = false;
-		}else{
-			int distance = s.length()-p.length();
-			if( (distance & 1) == 0 && s.contains(p) ){
+		} else {
+			int distance = s.length() - p.length();
+			if ((distance & 1) == 0 && s.contains(p)) {
 				amandaWin = true;
-			}else{
+			} else {
 				amandaWin = false;
 			}
 		}
-		return amandaWin?"Amanda":"Steven";
+		return amandaWin ? "Amanda" : "Steven";
 	}
 
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
+		// Return the number of non-empty perfect subsequences mod 1000000007
 		int q = in.nextInt();
-		for(int a0 = 0; a0 < q; a0++){
+		PerfectString perfectString = new PerfectString();
+		for (int a0 = 0; a0 < q; a0++) {
 			String s = in.next();
-			String p = in.next();
-			String result = stringGameWinner(s, p);
+			long result = perfectString.perfectNum(s);
 			System.out.println(result);
 		}
+	}
+
+	public class ListNode {
+		int val;
+		ListNode next;
+		ListNode(int x) { val = x; }
+	}
+
+	public static ListNode rotateRight(ListNode head, int k) {
+		if (head == null || k <= 0) {
+			return head;
+		}
+		int length = 0;
+		ListNode node = head;
+		while (node != null) {
+			length += 1;
+			node = node.next;
+		}
+		if (length == 1) {
+			return head;
+		}
+		k = k % length;
+		ListNode forEnding = head;
+		for (int i = 0; i < length - k - 1; i++) {
+			forEnding = forEnding.next;
+		}
+		ListNode forHead = forEnding.next;
+		forEnding.next = null;
+
+		ListNode actualEnd =  forHead;
+		while (actualEnd.next != null) {
+			actualEnd = actualEnd.next;
+		}
+
+		forEnding.next = null;
+		actualEnd.next = head;
+		return forHead;
 	}
 
 	private static int addNode(int sum, Node first, Node second) {

@@ -17,7 +17,7 @@ public class InorderSuccessorInBST {
 		TreeNode lastLeftNode = null;
 		TreeNode compareNode = root;
 		while (compareNode != null) {
-			if (findNode.value < compareNode.value) {
+			if (findNode.val < compareNode.val) {
 				lastLeftNode = compareNode;
 				compareNode = compareNode.left;
 			} else {

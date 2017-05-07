@@ -25,7 +25,7 @@ public class SumOfLeftLeaves {
                 treeNodeStack.push(treeNode.right);
             }
             if (treeNode.left != null) {
-                sum += treeNode.left.value;
+                sum += treeNode.left.val;
                 treeNodeStack.push(treeNode.left);
             }
         }
