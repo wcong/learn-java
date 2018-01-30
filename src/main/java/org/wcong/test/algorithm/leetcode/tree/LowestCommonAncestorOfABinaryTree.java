@@ -29,7 +29,7 @@ public class LowestCommonAncestorOfABinaryTree {
     }
 
     private static boolean findNode(TreeNode treeNode, TreeNode findNode, List<TreeNode> path) {
-        if (treeNode.value == findNode.value) {
+        if (treeNode.val == findNode.val) {
             return true;
         } else {
             if (treeNode.left != null) {

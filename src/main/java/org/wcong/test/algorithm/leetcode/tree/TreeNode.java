@@ -5,10 +5,10 @@ package org.wcong.test.algorithm.leetcode.tree;
  */
 public class TreeNode {
 
-    int value;
+	public int val;
 
-    TreeNode left;
+	public TreeNode left;
 
-    TreeNode right;
+	public TreeNode right;
 
 }
