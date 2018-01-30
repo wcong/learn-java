@@ -3,6 +3,7 @@ package org.wcong.test.rxjava;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableSubscriber;
 import io.reactivex.Scheduler;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -15,9 +16,12 @@ public class MyPublisher {
     private static CountDownLatch countDownLatch = new CountDownLatch(4);
 
     public static void main(String[] args) throws InterruptedException {
-        new ParallelFlowableRange(1, 100, Schedulers.computation()).subscribe(i -> {
-            System.out.println(Thread.currentThread().getName() + ":" + i);
-        }, e -> System.out.println(Thread.currentThread().getName() + ":" + e), () -> System.out.println(Thread.currentThread().getName() + ":complete"));
+        new ParallelFlowableRange(1, 100, Schedulers.computation()).subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) throws Exception {
+                System.out.println(Thread.currentThread().getName() + ":" + integer);
+            }
+        });
         countDownLatch.await();
     }
 
